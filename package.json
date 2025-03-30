@@ -4,7 +4,7 @@
   "icon": "icon.png",
   "displayName": "Mermaid Live Preview",
   "description": "A VS Code extension for real-time preview of Mermaid diagrams (.mmd files). Enhance your workflow with instant visualization of flowcharts, sequence diagrams, and more.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -24,6 +24,11 @@
           "light": "./media/preview-icon-light.svg",
           "dark": "./media/preview-icon-dark.svg"
         }
+      },
+      {
+        "command": "mmd-live-preview.previewSelect",
+        "title": "Mermaid Live Preview (Selection)",
+        "category": "Mermaid"
       }
     ],
     "menus": {
@@ -31,6 +36,11 @@
         {
           "when": "resourceExtname == .mmd",
           "command": "mmd-live-preview.preview",
+          "group": "navigation"
+        },
+        {
+          "command": "mmd-live-preview.previewSelect",
+          "when": "editorHasSelection",
           "group": "navigation"
         }
       ],
