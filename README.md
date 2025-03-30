@@ -1,46 +1,43 @@
 # MMD Live Preview
 
-[中文文档](README.zh.md) | English
+**MMD Live Preview** 是一个 Visual Studio Code 扩展，用于实时预览 [Mermaid](https://mermaid-js.github.io/) 图表（`.mmd` 文件）。它可以直接在 VS Code 中即时可视化流程图、时序图、甘特图等，提升你的工作效率。
 
-**MMD Live Preview** is a Visual Studio Code extension that provides real-time preview for [Mermaid](https://mermaid-js.github.io/) diagrams (`.mmd` files). It enhances your workflow by instantly visualizing flowcharts, sequence diagrams, Gantt charts, and more directly within VS Code.
+## 功能
 
-## Features
+- **实时预览**：在编辑 `.mmd` 文件时自动更新预览。
+- **支持 Mermaid 语法**：完全支持 Mermaid 的流程图、时序图、甘特图等语法。
+- **并排视图**：在编辑器旁边打开预览面板。
+- **主题支持**：自动适配 VS Code 的浅色和深色主题。
 
-- **Real-time Preview**: Automatically updates the preview as you edit your `.mmd` files.
-- **Support for Mermaid Syntax**: Fully supports Mermaid's syntax for flowcharts, sequence diagrams, Gantt charts, and more.
-- **Side-by-Side View**: Opens the preview in a separate panel beside your editor.
-- **Theme Support**: Automatically adapts to VS Code's light and dark themes.
+## 安装
 
-## Installation
+1. 打开 VS Code 的扩展视图（`Ctrl+Shift+X` 或 Mac 上的 `Cmd+Shift+X`）。
+2. 搜索 `Mermaid Live Preview`。
+3. 点击 **Install** 安装。
 
-1. Open the Extensions view in VS Code (`Ctrl+Shift+X` or `Cmd+Shift+X` on Mac).
-2. Search for `MMD Live Preview`.
-3. Click **Install**.
+## 使用方法
 
-## Usage
+1. 在 VS Code 中打开一个 `.mmd` 文件。
+2. 右键点击编辑器，选择 **Mermaid Live Preview**。
+3. 或者使用命令面板（`Ctrl+Shift+P` 或 Mac 上的 `Cmd+Shift+P`），搜索 `Mermaid Live Preview`。
+4. 选择Mermaid数据右击选择**Mermaid Live Preview (Selection)**
 
-1. Open a `.mmd` file in VS Code.
-2. Right-click in the editor and select **MMD Live Preview** from the context menu.
-3. Alternatively, use the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and search for `MMD Live Preview`.
+## 系统要求
 
-## Requirements
+- Visual Studio Code 版本需为 `1.98.0` 或更高。
+- Mermaid 图表需写在 `.mmd` 文件中。
 
-- Visual Studio Code version `1.98.0` or higher.
-- Mermaid diagrams must be written in `.mmd` files.
+## 已知问题
 
-## Known Issues
+- 大型图表可能需要更长时间渲染。
+- Mermaid 语法错误可能不会在预览中高亮显示。
 
-- Large diagrams may take longer to render.
-- Mermaid syntax errors may not be highlighted in the preview.
+## 贡献
 
-## Contributing
+欢迎贡献代码！请按照以下步骤操作：
 
-Contributions are welcome! Please follow these steps:
+1. Fork 此仓库。
+2. 为你的功能或修复创建一个新分支。
+3. 提交 Pull Request。
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+## 许可证

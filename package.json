@@ -19,7 +19,7 @@
     "commands": [
       {
         "command": "mmd-live-preview.preview",
-        "title": "MMD Live Preview",
+        "title": "Mermaid Live Preview",
         "icon": {
           "light": "./media/preview-icon-light.svg",
           "dark": "./media/preview-icon-dark.svg"
