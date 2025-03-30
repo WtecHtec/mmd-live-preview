@@ -24,13 +24,15 @@ export function getWebviewContent(mermaidContent: string, mermaidJsUri: string) 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${mermaidJsUri}</title>
     <script src="https://unpkg.com/svg2roughjs/dist/svg2roughjs.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.7/lib/umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script type="module">
     //  mermaid 绘制
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.6.0/+esm'
       // 缩放
       import panzoom from 'https://cdn.jsdelivr.net/npm/panzoom@9.4.3/+esm'
      
-   
+     const vscode = acquireVsCodeApi();
      
       // 初始化
       mermaid.initialize({ 
@@ -43,6 +45,17 @@ export function getWebviewContent(mermaidContent: string, mermaidJsUri: string) 
             const container = document.getElementById("mermaid-container");
             try {
                 await mermaid.run({ nodes: [container] });
+
+                // 手动移除多余的 <p> 标签
+        const pTags = container.querySelectorAll("g p");
+        pTags.forEach((p) => {
+            const parent = p.parentNode;
+            while (p.firstChild) {
+                parent.insertBefore(p.firstChild, p);
+            }
+            parent.removeChild(p);
+        });
+
                 setupHandeDraw()
                 setupPanZoom();
             } catch (error) {
@@ -67,6 +80,49 @@ export function getWebviewContent(mermaidContent: string, mermaidJsUri: string) 
             svgConverter.sketch()
              
         }
+
+        function exportToSVG() {
+            const svgElement = document.querySelector("#result-mermaid svg");
+            if (!svgElement) {
+                alert("No diagram to export!");
+                return;
+            }
+            // 序列化 SVG 数据
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+             vscode.postMessage({
+                    command: 'exportSVG',
+                    svgContent: svgData
+                });
+}
+
+async function exportToPng() {
+    const svgElement = document.querySelector("#result-mermaid svg");
+    if (!svgElement) {
+        alert("No diagram to export!");
+        return;
+    }
+
+
+    // 使用 html2canvas 捕获整个容器
+    const container = document.getElementById("result-mermaid");
+    html2canvas(container).then((canvas) => {
+        // 导出为 PNG
+        const pngUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = pngUrl;
+        const fileName = \`mermaid-diagram-\${Date.now()}.png\`;
+        link.download = fileName;
+        link.click();
+    }).catch((err) => {
+        console.error("Failed to export PNG:", err);
+        alert("Failed to export PNG. Please try again.");
+    });
+}
+
+       
+
+        document.getElementById("export-button").addEventListener("click", exportToPng);
+         document.getElementById("export-svg-button").addEventListener("click", exportToSVG);
 
         document.addEventListener("DOMContentLoaded", renderMermaid);
     </script>
@@ -95,10 +151,43 @@ export function getWebviewContent(mermaidContent: string, mermaidJsUri: string) 
 
             opacity: 0;   
         }
+
+          #export-button {
+            margin: 0 10px;
+            padding: 4px 10px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+         
+        }
+        #export-svg-button {
+            padding: 4px 10px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          
+        }
+            .toolbar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+        }
         
     </style>
 </head>
 <body>
+    <div class="toolbar">
+         <button id="export-button">Export as PNG</button>
+    <button id="export-svg-button">Export as SVG</button>
+    </div>
+   
     <div id="mermaid-container">
         ${mermaidContent}
     </div>

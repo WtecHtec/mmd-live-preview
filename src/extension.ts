@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import path from 'path';
+import fs from 'fs';
 import * as vscode from 'vscode';
 import { updateWebview } from './mmdwebview';
 
@@ -45,6 +46,23 @@ export function activate(context: vscode.ExtensionContext) {
                 ]
             }
         );
+        // 监听 Webview 发送的消息
+        panel.webview.onDidReceiveMessage(
+            (message) => {
+                switch (message.command) {
+                    case 'exportPNG':
+                        vscode.window.showInformationMessage(`PNG exported successfully!`);
+                        break;
+                    case 'exportSVG':
+                        exportSVG(message.svgContent);
+                        break
+                    default:
+                        vscode.window.showErrorMessage(`Unknown command: ${message.command}`);
+                }
+            },
+            undefined,
+            context.subscriptions
+        );
 		// 获取mmd 内容
 		const mermaidContent = document.getText();
 
@@ -66,6 +84,60 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+}
+
+
+async function exportPNG(svgContent: string, width: number = 800, height: number = 600) {
+   // 获取当前工作区的根目录
+   const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
+
+   // 显示保存对话框，默认路径为工作区根目录
+   const saveUri = await vscode.window.showSaveDialog({
+       filters: {
+           Images: ['png']
+       },
+       defaultUri: vscode.Uri.file(path.join(workspaceFolder, 'diagram.png'))
+   });
+
+   if (!saveUri) {
+       vscode.window.showInformationMessage('Export cancelled.');
+       return;
+   }
+   vscode.window.showInformationMessage(`PNG saved: successfully`);
+//    svg2img(svgContent, function(error, buffer) {
+//         //returns a Buffer
+//         // fs.writeFileSync('foo1.png', buffer);
+//     });
+     // 使用 svg2img 将 SVG 转换为 PNG
+    //  svg2img(svgContent, (error, buffer) => {
+    //     if (error) {
+    //         vscode.window.showErrorMessage(`Failed to export PNG: ${error.message}`);
+    //         return;
+    //     }
+
+    //     // 将 PNG 数据写入文件
+    //     fs.writeFile(saveUri.fsPath, buffer, (err) => {
+    //         if (err) {
+    //             vscode.window.showErrorMessage(`Failed to save PNG: ${err.message}`);
+    //         } else {
+    //             vscode.window.showInformationMessage(`PNG exported successfully: ${saveUri.fsPath}`);
+    //         }
+    //     });
+    // });
+}
+
+async function exportSVG(svgContent: string) {
+    const uri = await vscode.window.showSaveDialog({
+        filters: {
+            'SVG': ['svg']
+        },
+        defaultUri: vscode.Uri.file(path.join(vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '', 'diagram.svg'))
+    });
+    
+    if (uri) {
+        fs.writeFileSync(uri.fsPath, svgContent);
+        vscode.window.showInformationMessage('SVG exported successfully!');
+    }
 }
 
 // This method is called when your extension is deactivated

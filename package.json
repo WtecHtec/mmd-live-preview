@@ -2,14 +2,14 @@
   "name": "mmd-live-preview",
   "publisher": "Herzshen",
   "icon": "icon.png",
-  "displayName": "MMD Live Preview",
+  "displayName": "Mermaid Live Preview",
   "description": "A VS Code extension for real-time preview of Mermaid diagrams (.mmd files). Enhance your workflow with instant visualization of flowcharts, sequence diagrams, and more.",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "engines": {
-    "vscode": "^1.98.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
-   "Visualization",
+    "Visualization",
     "Programming Languages",
     "Other"
   ],
@@ -55,17 +55,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.98.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.90.0",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
-    "eslint": "^9.23.0",
-    "typescript": "^5.8.2",
-    "ts-loader": "^9.5.2",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.23.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
   }
 }
